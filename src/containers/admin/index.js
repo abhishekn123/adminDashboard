@@ -12,6 +12,7 @@ export default function Admin() {
   const [selectedComId, setComId] = useState(null);
   const [selectedComp, setSelectedComp] = useState([]);
   const [selectedVendor, setVendor] = useState([]);
+  const [selectedMileStone, setMileStone] = useState([]);
   useEffect(() => {
     getRooms().map((exp) => {
       rooms.set(exp.id, exp);
@@ -85,6 +86,7 @@ export default function Admin() {
         }
       });
     }
+    setRooms(new Map(rooms.entries()));
   }
   function handleCreateVendor(compId) {
     let room = rooms.get(selectedRoomId);
@@ -105,7 +107,8 @@ export default function Admin() {
                 rate: "",
                 units: "",
               },
-              material: {},
+              material: { item: "", specification: "", quantity: "", rate: "" },
+              mileStone: [],
             });
             setVendor(unit.components[index].vendors);
           }
@@ -130,7 +133,11 @@ export default function Admin() {
         }
       });
     }
+    setRooms(new Map(rooms.entries()));
   }
+
+  function handleCreateMileStone(vendorId) {}
+  function onMileStoneChange() {}
   return (
     <Container fluid>
       <Row>
@@ -156,8 +163,8 @@ export default function Admin() {
             <Vendors vendors={selectedVendor} onChange={onVendorChange} />
           ) : null}
         </Col>
-        <Col>
-          <Milestone />
+        <Col className="border">
+          <Milestone mileStone={selectedMileStone} onChange={onMileStoneChange} />
         </Col>
       </Row>
     </Container>

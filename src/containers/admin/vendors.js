@@ -27,7 +27,7 @@ export default function Vendors({ onChange = () => {}, vendors = [] }) {
           {mode === "work" ? (
             <Work vendor={vendor} onChange={onChange} index={index} />
           ) : (
-            <Material />
+            <Material vendor={vendor} onChange={onChange} index={index} />
           )}
         </Fragment>
       ))}
@@ -158,7 +158,16 @@ function Work({
   );
 }
 
-function Material() {
+function Material({
+  onChange = () => {},
+  index = -1,
+  vendor = {
+    id: 0,
+    compName: "",
+    work: { headerName: "", description: "", quantity: 0, rate: 0, units: "" },
+    material: { item: "", specification: "", quantity: "", rate: "" },
+  },
+}) {
   return (
     <>
       <Row>
@@ -168,10 +177,37 @@ function Material() {
           </select>
         </Col>
         <Col md={4} sm={4}>
-          <FormControl type="number" className="p-2" />
+          <FormControl
+            value={vendor.material.item}
+            onChange={(e) => {
+              onChange(
+                {
+                  ...vendor,
+                  material: { ...vendor.material, item: e.target.value },
+                },
+                index
+              );
+            }}
+            className="p-2"
+          />
         </Col>
         <Col md={4} sm={4}>
-          <FormControl type="number" className="p-2" />
+          <FormControl
+            value={vendor.material.specification}
+            onChange={(e) => {
+              onChange(
+                {
+                  ...vendor,
+                  material: {
+                    ...vendor.material,
+                    specification: e.target.value,
+                  },
+                },
+                index
+              );
+            }}
+            className="p-2"
+          />
         </Col>
       </Row>
       <Row>
@@ -181,10 +217,36 @@ function Material() {
           </select>
         </Col>
         <Col md={4} sm={4}>
-          <FormControl type="number" className="p-2" />
+          <FormControl
+            type="number"
+            value={vendor.material.quantity}
+            onChange={(e) => {
+              onChange(
+                {
+                  ...vendor,
+                  material: { ...vendor.material, quantity: e.target.value },
+                },
+                index
+              );
+            }}
+            className="p-2"
+          />
         </Col>
         <Col md={4} sm={4}>
-          <FormControl type="number" className="p-2" />
+          <FormControl
+            type="number"
+            value={vendor.material.rate}
+            className="p-2"
+            onChange={(e) => {
+              onChange(
+                {
+                  ...vendor,
+                  material: { ...vendor.material, rate: e.target.value },
+                },
+                index
+              );
+            }}
+          />
         </Col>
       </Row>
     </>
