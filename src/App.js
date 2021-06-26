@@ -1,8 +1,10 @@
-import {  useState } from "react";
+import React from 'react'
 import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Admin from "./containers/admin/index"
 function App() {
   return (
-    <div></div>
+    <Admin/>
   );
 }
 
