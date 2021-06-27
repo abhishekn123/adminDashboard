@@ -70,8 +70,8 @@ export default function Admin() {
       setSelectedComp([...component]);
       setComponents(new Map([...components.entries()]));
       setUnitId(unitId);
-      setSelectedVendor([]);
-      setMileStone([]);
+      // setSelectedVendor([]);
+      // setMileStone([]);
     }
   }
 
