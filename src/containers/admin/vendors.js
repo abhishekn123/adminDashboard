@@ -1,6 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, FormControl } from "react-bootstrap";
 import AddIcon from "@material-ui/icons/Add";
+import Input from "../../components/input";
+import Textarea from "../../components/textarea";
+import "./vendor.css"
 export default function Vendors({
   onChange = () => {},
   vendors = [],
@@ -15,7 +18,7 @@ export default function Vendors({
     <>
       {values.map((vendor, index) => (
         <Fragment key={index}>
-          <p className="h5 text-center p-2">{vendor.compName}</p>
+          <p className="h5 text-center p-2">Component {index+1}</p>
           <Row>
             <Col>
               <p className="text-center h6" onClick={() => setMode("work")}>
@@ -58,11 +61,14 @@ function Work({
   return (
     <>
       <Row>
+            <Col><p className="heading"><span>Vendor {index+1}</span></p></Col>
+          </Row>
+      <Row>
         <Col>
           <p>Work Type</p>
         </Col>
         <Col className="text-right">
-          <select>
+          <select className="drop" >
             <option>Only Work</option>
           </select>
         </Col>
@@ -72,29 +78,26 @@ function Work({
           <p>Vendor Category</p>
         </Col>
         <Col className="text-right">
-          <select>
+          <select className="drop" > 
             <option>Carpenter</option>
           </select>
         </Col>
       </Row>
-      <FormControl
-        className="p-2"
-        value={vendor.work?.headerName??""}
+      <Input
+        label="heading"
+        value={vendor.work?.headerName ?? ""}
         onChange={(e) => {
           onChange(
-            {
-              ...vendor,
-              work: { ...vendor.work, headerName: e.target.value },
-            },
+            { ...vendor, work: { ...vendor.work, headerName: e.target.value } },
             index
           );
         }}
       />
-      <FormControl
-        as="textarea"
-        aria-label="Unit Name"
-        className="mt-2"
+      <div className="mt-2">
+      <Textarea
+        label="Description"
         value={vendor.work.description}
+        className="p-2 "
         onChange={(e) => {
           onChange(
             {
@@ -105,13 +108,10 @@ function Work({
           );
         }}
       />
+      </div>
       <Row className="mt-2">
         <Col>
-          <FormControl
-            type="number"
-            className="p-2"
-            value={vendor.work.quantity}
-            onChange={(e) => {
+        <Input label="quant" type="number"  value={vendor.work.quantity}     onChange={(e) => {
               onChange(
                 {
                   ...vendor,
@@ -119,15 +119,10 @@ function Work({
                 },
                 index
               );
-            }}
-          />
+            }}/>
         </Col>
         <Col>
-          <FormControl
-            type="number"
-            className="p-2"
-            value={vendor.work.rate}
-            onChange={(e) => {
+        <Input label="rate" type="number"    value={vendor.work.rate}    onChange={(e) => {
               onChange(
                 {
                   ...vendor,
@@ -135,14 +130,10 @@ function Work({
                 },
                 index
               );
-            }}
-          />
+            }}/>
         </Col>
         <Col>
-          <FormControl
-            className="p-2"
-            value={vendor.work.units}
-            onChange={(e) => {
+        <Input label="unit"  value={vendor.work.units}   onChange={(e) => {
               onChange(
                 {
                   ...vendor,
@@ -150,8 +141,7 @@ function Work({
                 },
                 index
               );
-            }}
-          />
+            }} />
         </Col>
       </Row>
       <Row>
@@ -184,14 +174,18 @@ function Material({
     <>
       {vendor.material.map((exp, i) => (
         <Fragment key={i}>
+            <Row>
+            <Col><p className="heading"><span>Material {i+1}</span></p></Col>
+          </Row>
           <Row>
             <Col md={4} sm={4}>
-              <select>
+              <select  className="drop" >
                 <option>Carpenter</option>
               </select>
             </Col>
             <Col md={4} sm={4}>
-              <FormControl
+              <Input
+                label="item"
                 value={exp.item}
                 onChange={(e) => {
                   vendor.material[i] = {
@@ -206,11 +200,11 @@ function Material({
                     index
                   );
                 }}
-                className="p-2"
               />
             </Col>
             <Col md={4} sm={4}>
-              <FormControl
+              <Input
+                label="spec"
                 value={exp.specification}
                 onChange={(e) => {
                   vendor.material[i] = {
@@ -225,20 +219,20 @@ function Material({
                     index
                   );
                 }}
-                className="p-2"
               />
             </Col>
           </Row>
-          <Row>
+          <Row className="mt-2">
             <Col md={4} sm={4}>
-              <select>
+              <select  className="drop" >
                 <option>PlyWood</option>
               </select>
             </Col>
             <Col md={4} sm={4}>
-              <FormControl
-                type="number"
+              <Input
+                label="quant"
                 value={exp.quantity}
+                type="number"
                 onChange={(e) => {
                   vendor.material[i] = {
                     ...vendor.material[i],
@@ -252,14 +246,13 @@ function Material({
                     index
                   );
                 }}
-                className="p-2"
               />
             </Col>
             <Col md={4} sm={4}>
-              <FormControl
+              <Input
+                label="spec"
                 type="number"
                 value={exp.rate}
-                className="p-2"
                 onChange={(e) => {
                   vendor.material[i] = {
                     ...vendor.material[i],
@@ -275,6 +268,9 @@ function Material({
                 }}
               />
             </Col>
+          </Row>
+          <Row>
+            <Col>₹{exp.quantity * exp.rate || 0}</Col>
           </Row>
         </Fragment>
       ))}

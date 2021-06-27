@@ -1,6 +1,8 @@
 import React, { useEffect, useState,Fragment } from "react";
 import { Row, Col, FormControl } from "react-bootstrap";
 import AddIcon from "@material-ui/icons/Add";
+import Input from "../../components/input";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default function Units({
   room = [],
@@ -41,13 +43,7 @@ export function Unit({ addComponent = () => {}, roomId = 0, unitId = 0 }) {
   const [name, setName] = useState("");
   return (
     <>
-      <FormControl
-        placeholder="Unit Name"
-        aria-label="Unit Name"
-        className="p-2"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+      <Input label="Unit Name" icon={()=><DeleteIcon style={{fontSize:"20px"}} />}  value={name} onChange={(e) => setName(e.target.value)} />
       <p
         className="h6 text-right"
         color="primary"

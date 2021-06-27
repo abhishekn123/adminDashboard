@@ -1,7 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Row, Col, FormControl, Modal, Button } from "react-bootstrap";
+import { Row, Col, Modal, Button } from "react-bootstrap";
 import ClearIcon from "@material-ui/icons/Clear";
 import AddIcon from "@material-ui/icons/Add";
+import Input from "../../components/input";
+import "./milestone.css";
 export default function Milestone({
   mileStone = [],
   onChange = () => {},
@@ -9,33 +11,29 @@ export default function Milestone({
   removeMileStone = () => {},
 }) {
   const [values, setValues] = useState([]);
-  const [state, setState] = useState({open:false,index:-1});
+  const [state, setState] = useState({ open: false, index: -1 });
   useEffect(() => {
     setValues(mileStone);
   }, [mileStone]);
   return (
     <>
-      <Popup
-        state={state}
-        setState={setState}
-        onOk={removeMileStone}
-      />
-      <p className="h5 text-center p-2">Vendoe 1-Milestones</p>
+      <Popup state={state} setState={setState} onOk={removeMileStone} />
+      <p className="h5 text-center p-2">Vendor-Milestones</p>
       {values.map((mile, ind) => (
-        <Fragment key={ind}>
-          <Row>
-            <Col>
-              <FormControl
-                className="p-2"
+        <Fragment key={ind} >
+          <Row className="mt-2" >
+            <Col md={5} sm={5} >
+              <Input
+                label="milestone"
                 value={mile.item}
                 onChange={(e) => {
                   onChange({ ...mile, item: e.target.value }, ind);
                 }}
               />
             </Col>
-            <Col>
-              <FormControl
-                className="p-2"
+            <Col md={5} sm={5} >
+              <Input
+                label="%"
                 value={mile.value}
                 onChange={(e) => {
                   onChange({ ...mile, value: e.target.value }, ind);
@@ -44,7 +42,9 @@ export default function Milestone({
             </Col>
             <Col>
               <ClearIcon
-                onClick={() => {setState({open:true,index:ind})}}
+                onClick={() => {
+                  setState({ open: true, index: ind });
+                }}
                 style={{ fontSize: "14px" }}
               />
             </Col>
@@ -61,10 +61,14 @@ export default function Milestone({
   );
 }
 
-function Popup({state={open:false,index:-1} ,setState=()=>{},onOk=()=>{}}) {
+function Popup({
+  state = { open: false, index: -1 },
+  setState = () => {},
+  onOk = () => {},
+}) {
   const [pState, setPState] = useState(state);
   useEffect(() => {
-    setPState(state)
+    setPState(state);
   }, [state]);
   return (
     <Modal
@@ -82,8 +86,21 @@ function Popup({state={open:false,index:-1} ,setState=()=>{},onOk=()=>{}}) {
         <h6>Are you sure to do this</h6>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={()=>{onOk(pState.index);setPState({open:false,index:-1})}}>Yes</Button>
-        <Button onClick={()=>{setPState({open:false,index:-1})}}>No</Button>
+        <Button
+          onClick={() => {
+            onOk(pState.index);
+            setPState({ open: false, index: -1 });
+          }}
+        >
+          Yes
+        </Button>
+        <Button
+          onClick={() => {
+            setPState({ open: false, index: -1 });
+          }}
+        >
+          No
+        </Button>
       </Modal.Footer>
     </Modal>
   );
