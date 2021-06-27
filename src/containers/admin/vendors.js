@@ -1,7 +1,11 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, FormControl } from "react-bootstrap";
 import AddIcon from "@material-ui/icons/Add";
-export default function Vendors({ onChange = () => {}, vendors = [] }) {
+export default function Vendors({
+  onChange = () => {},
+  vendors = [],
+  addMileStone = () => {},
+}) {
   const [mode, setMode] = useState("work");
   const [values, setValues] = useState([]);
   useEffect(() => {
@@ -25,7 +29,12 @@ export default function Vendors({ onChange = () => {}, vendors = [] }) {
             </Col>
           </Row>
           {mode === "work" ? (
-            <Work vendor={vendor} onChange={onChange} index={index} />
+            <Work
+              vendor={vendor}
+              onChange={onChange}
+              index={index}
+              addMileStone={addMileStone}
+            />
           ) : (
             <Material vendor={vendor} onChange={onChange} index={index} />
           )}
@@ -41,9 +50,10 @@ function Work({
     id: 0,
     compName: "",
     work: { headerName: "", description: "", quantity: 0, rate: 0, units: "" },
-    material: {},
+    material: [],
   },
   index = -1,
+  addMileStone = () => {},
 }) {
   return (
     <>
@@ -69,7 +79,7 @@ function Work({
       </Row>
       <FormControl
         className="p-2"
-        value={vendor.work.headerName}
+        value={vendor.work?.headerName??""}
         onChange={(e) => {
           onChange(
             {
@@ -147,13 +157,15 @@ function Work({
       <Row>
         <Col>₹{0}</Col>
         <Col className="text-right">
-          <span style={{ fontSize: "14px" }}>Add milestones</span>
+          <span
+            style={{ fontSize: "14px" }}
+            onClick={() => addMileStone(vendor.id)}
+          >
+            Add milestones
+          </span>
         </Col>
       </Row>
-      <AddIcon
-        style={{ fontSize: "18px", cursor: "pointer" }}
-        onClick={() => {}}
-      />
+      <AddIcon style={{ fontSize: "18px", cursor: "pointer" }} />
     </>
   );
 }
@@ -165,90 +177,121 @@ function Material({
     id: 0,
     compName: "",
     work: { headerName: "", description: "", quantity: 0, rate: 0, units: "" },
-    material: { item: "", specification: "", quantity: "", rate: "" },
+    material: [{ item: "", specification: "", quantity: "", rate: "" }],
   },
 }) {
   return (
     <>
-      <Row>
-        <Col md={4} sm={4}>
-          <select>
-            <option>Carpenter</option>
-          </select>
-        </Col>
-        <Col md={4} sm={4}>
-          <FormControl
-            value={vendor.material.item}
-            onChange={(e) => {
-              onChange(
-                {
-                  ...vendor,
-                  material: { ...vendor.material, item: e.target.value },
-                },
-                index
-              );
-            }}
-            className="p-2"
-          />
-        </Col>
-        <Col md={4} sm={4}>
-          <FormControl
-            value={vendor.material.specification}
-            onChange={(e) => {
-              onChange(
-                {
-                  ...vendor,
-                  material: {
-                    ...vendor.material,
+      {vendor.material.map((exp, i) => (
+        <Fragment key={i}>
+          <Row>
+            <Col md={4} sm={4}>
+              <select>
+                <option>Carpenter</option>
+              </select>
+            </Col>
+            <Col md={4} sm={4}>
+              <FormControl
+                value={exp.item}
+                onChange={(e) => {
+                  vendor.material[i] = {
+                    ...vendor.material[i],
+                    item: e.target.value,
+                  };
+                  onChange(
+                    {
+                      ...vendor,
+                      material: [...vendor.material],
+                    },
+                    index
+                  );
+                }}
+                className="p-2"
+              />
+            </Col>
+            <Col md={4} sm={4}>
+              <FormControl
+                value={exp.specification}
+                onChange={(e) => {
+                  vendor.material[i] = {
+                    ...vendor.material[i],
                     specification: e.target.value,
-                  },
-                },
-                index
-              );
-            }}
-            className="p-2"
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col md={4} sm={4}>
-          <select>
-            <option>PlyWood</option>
-          </select>
-        </Col>
-        <Col md={4} sm={4}>
-          <FormControl
-            type="number"
-            value={vendor.material.quantity}
-            onChange={(e) => {
-              onChange(
-                {
-                  ...vendor,
-                  material: { ...vendor.material, quantity: e.target.value },
-                },
-                index
-              );
-            }}
-            className="p-2"
-          />
-        </Col>
-        <Col md={4} sm={4}>
-          <FormControl
-            type="number"
-            value={vendor.material.rate}
-            className="p-2"
-            onChange={(e) => {
-              onChange(
-                {
-                  ...vendor,
-                  material: { ...vendor.material, rate: e.target.value },
-                },
-                index
-              );
-            }}
-          />
-        </Col>
-      </Row>
+                  };
+                  onChange(
+                    {
+                      ...vendor,
+                      material: [...vendor.material],
+                    },
+                    index
+                  );
+                }}
+                className="p-2"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4} sm={4}>
+              <select>
+                <option>PlyWood</option>
+              </select>
+            </Col>
+            <Col md={4} sm={4}>
+              <FormControl
+                type="number"
+                value={exp.quantity}
+                onChange={(e) => {
+                  vendor.material[i] = {
+                    ...vendor.material[i],
+                    quantity: e.target.value,
+                  };
+                  onChange(
+                    {
+                      ...vendor,
+                      material: [...vendor.material],
+                    },
+                    index
+                  );
+                }}
+                className="p-2"
+              />
+            </Col>
+            <Col md={4} sm={4}>
+              <FormControl
+                type="number"
+                value={exp.rate}
+                className="p-2"
+                onChange={(e) => {
+                  vendor.material[i] = {
+                    ...vendor.material[i],
+                    rate: e.target.value,
+                  };
+                  onChange(
+                    {
+                      ...vendor,
+                      material: [...vendor.material],
+                    },
+                    index
+                  );
+                }}
+              />
+            </Col>
+          </Row>
+        </Fragment>
+      ))}
+      <AddIcon
+        style={{ fontSize: "18px", cursor: "pointer" }}
+        onClick={() => {
+          let length = vendor.material.length;
+          vendor.material.push({
+            item: "",
+            specification: "",
+            quantity: "",
+            rate: "",
+            id: length > 0 ? length : 0,
+          });
+          onChange({ ...vendor, material: [...vendor.material] }, index);
+        }}
+      />
     </>
   );
 }
