@@ -1,0 +1,15 @@
+.cursor
+{
+    cursor: pointer;
+}
+.navigator
+{
+    color:#03a9f4
+}
+
+.unit-buttons
+{
+    position: relative;
+    z-index: 1;
+    top:0
+}

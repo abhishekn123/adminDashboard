@@ -61,6 +61,7 @@ export default function Components({
                   addVendor(component.id);
                 }}
                 style={{ fontSize: "14px" }}
+                className="cursor navigator"
               >
                 Add Vendors/Material
               </span>

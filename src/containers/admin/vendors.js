@@ -146,8 +146,9 @@ function Work({
       </Row>
       <Row>
         <Col>₹{0}</Col>
-        <Col className="text-right">
+        <Col className="text-right cursor">
           <span
+          className="navigator"
             style={{ fontSize: "14px" }}
             onClick={() => addMileStone(vendor.id)}
           >

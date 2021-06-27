@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col,Navbar } from "react-bootstrap";
 import Units from "./units";
 import Components from "./components";
 import Vendors from "./vendors";
 import Milestone from "./milestone";
 import { getRooms } from "../../service/adminService";
+import "./index.css";
 export default function Admin() {
   const [rooms, setRooms] = useState(new Map());
   const [selectedRoomId, setRoomId] = useState(null);
@@ -69,6 +70,8 @@ export default function Admin() {
       setSelectedComp([...component]);
       setComponents(new Map([...components.entries()]));
       setUnitId(unitId);
+      setSelectedVendor([]);
+      setMileStone([]);
     }
   }
 
@@ -187,14 +190,14 @@ export default function Admin() {
   return (
     <Container fluid className="mt-2" >
       <Row>
-        <Col className="border">
+        <Col className="border" sm={12} md={6} lg={3}>
           <Units
             room={[...roomGroup.values()]}
             addUnit={handleCreateUnit}
             addComponent={handleCreateComponent}
           />
         </Col>
-        <Col className={selectedComp.length > 0 ? "border" : ""}>
+        <Col className={selectedComp.length > 0 ? "border" : ""} sm={12} md={6} lg={3} >
           {selectedComp.length > 0 ? (
             <Components
               components={selectedComp}
@@ -204,7 +207,7 @@ export default function Admin() {
             />
           ) : null}
         </Col>
-        <Col className={selectedVendor.length > 0 ? "border" : ""}>
+        <Col className={selectedVendor.length > 0 ? "border" : ""} sm={12} md={6} lg={3} >
           {selectedVendor.length > 0 ? (
             <Vendors
               vendors={selectedVendor}
@@ -213,7 +216,7 @@ export default function Admin() {
             />
           ) : null}
         </Col>
-        <Col className={selectedMileStone.length > 0 ? "border" : ""}>
+        <Col className={selectedMileStone.length > 0 ? "border" : ""} sm={12} md={6} lg={3} >
           {selectedMileStone.length > 0 ? (
             <Milestone
               mileStone={selectedMileStone}
